@@ -9,6 +9,7 @@
     "@mui/material": "^5.10.9",
     "@mui/x-date-pickers": "^5.0.5",
     "@reduxjs/toolkit": "^1.8.6",
+    "@tailwindcss/forms": "^0.5.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -24,9 +25,11 @@
     "dayjs": "^1.11.6",
     "firebase": "^9.12.1",
     "moment": "^2.29.4",
+    "postcss-typescript-css": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.0.3",
+    "react-helmet": "^6.1.0",
     "react-mui-fileuploader": "^0.2.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
@@ -58,5 +61,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.2.1"
   }
 }
