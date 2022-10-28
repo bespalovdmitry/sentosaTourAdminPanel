@@ -3,8 +3,7 @@ import {collection, onSnapshot} from "firebase/firestore";
 import {db} from "../../firebase/firebase";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {formSlice} from "../../state/formReducer";
-import Login from "./Login/Login";
-
+import { Login } from "./Login/Login"
 
 const AdminPanel = () => {
     const {setEmail} = formSlice.actions
