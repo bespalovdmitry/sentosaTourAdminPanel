@@ -1,6 +1,6 @@
 import {PANEL_ROUTE} from "./utils/consts";
-import AdminPanel from "./components/adminPanel/AdminPanel";
-import VisaForm from "./components/VisaForm";
+import { AdminPanel } from "src/components/adminPanel/AdminPanel";
+import VisaForm from "src/components/VisaForm";
 
 export const publicRoutes = [
     {

@@ -1,9 +1,11 @@
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import formReducer from './formReducer'
+import loginSlice from 'src/state/loginSlice'
 
 const rootReducer = combineReducers({
     formReducer,
+    loginSlice
 })
 
 export const setupStore = () => {
