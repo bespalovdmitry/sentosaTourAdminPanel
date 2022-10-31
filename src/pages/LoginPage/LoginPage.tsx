@@ -7,8 +7,19 @@ import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {Navigate} from 'react-router-dom'
+import Typography from "@mui/material/Typography";
+import Toolbar from "@mui/material/Toolbar";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import { setAdmin } from 'src/state/loginSlice';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-export const Login = () => {
+export const LoginPage = () => {
+    const isLoggedIn = useAppSelector(state => state.loginSlice.isLoggedIn);
+    const dispatch = useAppDispatch();
+
+    const auth = getAuth();
+
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -24,18 +35,33 @@ export const Login = () => {
             }
             if (!values.password) {
                 errors.password = 'Required';
-            } else if (values.password !== '1234') {
-                errors.password = 'Invalid password'
             }
+
             return errors;
         },
-        onSubmit: values => {
-            alert(JSON.stringify(values));
-            formik.resetForm()
+        onSubmit: async values => {
+            // alert(JSON.stringify(values));
+            try {
+                await signInWithEmailAndPassword(auth, values.email, values.password)
+                dispatch(setAdmin())
+                formik.resetForm()
+            } catch (err) {
+                console.log(err)
+            }
         },
     });
+
+    if (isLoggedIn) {
+        return <Navigate to='/panel'/>
+    }
+
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
+            <Toolbar style={{alignItems: 'center', margin: '70px 0 10px 0'}}>
+                <Typography variant="h3" gutterBottom>
+                    Login
+                </Typography>
+            </Toolbar>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormGroup>
@@ -82,8 +108,14 @@ export const Login = () => {
 }
 
 //types
+// type LoginPageType = {
+//     isLoggedIn: boolean
+//     setIsLoggedIn: (isLoggedIn: boolean) => void
+// }
+
 type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
 }
+

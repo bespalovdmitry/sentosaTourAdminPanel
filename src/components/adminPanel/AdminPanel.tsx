@@ -1,11 +1,15 @@
 import React, {useEffect} from 'react';
 import {collection, onSnapshot} from "firebase/firestore";
-import {db} from "../../firebase/firebase";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import {formSlice} from "../../state/formReducer";
-import { Login } from "./Login/Login"
+import {db} from "src/firebase/firebase";
+import {useAppDispatch, useAppSelector} from "src/hooks/hooks";
+import {formSlice} from "src/state/formReducer";
+import {Navigate} from "react-router-dom";
+import Button from "@mui/material/Button";
 
-const AdminPanel = () => {
+export const AdminPanel = () => {
+    const isLoggedIn = useAppSelector(state => state.loginSlice.isLoggedIn)
+
+
     const {setEmail} = formSlice.actions
     const applicants = useAppSelector(state => state.formReducer)
     const dispatch = useAppDispatch()
@@ -17,12 +21,16 @@ const AdminPanel = () => {
             })
         });
     }, [])
+
+    if(!isLoggedIn) {
+        return <Navigate to='/login' />
+    }
+
     return (
         <div>
             {applicants.email}
-            <Login />
+            AdminPanel
+            <Button>log out</Button>
         </div>
     );
 };
-
-export default AdminPanel;
