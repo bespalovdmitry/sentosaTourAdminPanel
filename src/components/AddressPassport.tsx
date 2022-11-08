@@ -5,9 +5,9 @@ import FormControl from "@mui/material/FormControl";
 import BasicSelect from "./BasicSelect";
 import {citizenship} from "./BasicInformation";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {formSlice} from "../state/formReducer";
 import {SelectType} from "./VisaForm";
 import {v1} from "uuid";
+import {formSlice} from "../state/formSlice";
 
 type PropsType = {
     index: number

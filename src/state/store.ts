@@ -1,17 +1,19 @@
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
-import formReducer from './formReducer'
-import loginSlice from 'src/state/loginSlice'
+import formReducer from './formSlice'
+import appSlice from "src/state/appSlice";
+import userSlice from "src/state/userSlice";
 
 const rootReducer = combineReducers({
     formReducer,
-    loginSlice
+    userSlice,
+    appSlice
 })
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware:(getDefaultMiddleware) => getDefaultMiddleware(
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware(
             {
                 serializableCheck: {
                     // Ignore these action types
@@ -21,7 +23,7 @@ export const setupStore = () => {
                     // Ignore these paths in the state
                     ignoredPaths: ['items.dates'],
                 }
-    },
+            },
         )
     })
 }

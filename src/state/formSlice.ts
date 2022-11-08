@@ -1,6 +1,6 @@
-import {createSlice, PayloadAction, PayloadActionCreator} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Dayjs} from "dayjs";
-import { Moment } from 'moment'
+import {Moment} from 'moment'
 import {applicantModel} from "../models/applicantModel";
 
 export type Applicant = {
@@ -30,7 +30,7 @@ export type Applicant = {
     livedCount: number
     convicted: string
     livedCountryApplicant: [
-        {livedCountry: string, livedFrom: Dayjs | null, livedTo: Dayjs | null, livedCity: string, livedAddress: string}
+        { livedCountry: string, livedFrom: Dayjs | null, livedTo: Dayjs | null, livedCity: string, livedAddress: string }
     ]
 }
 
@@ -131,7 +131,7 @@ export const formSlice = createSlice({
         setService(state, action: PayloadAction<string>) {
             state.service = action.payload
         },
-        setPrice(state, action: PayloadAction<number>){
+        setPrice(state, action: PayloadAction<number>) {
             state.price = action.payload
         },
         setVisit(state, action: PayloadAction<string>) {
