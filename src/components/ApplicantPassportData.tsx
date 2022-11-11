@@ -7,7 +7,7 @@ import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Dayjs} from "dayjs";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {formSlice} from "../state/formReducer";
+import {formSlice} from "../state/formSlice";
 import {SelectType} from "./VisaForm";
 import {v1} from "uuid";
 

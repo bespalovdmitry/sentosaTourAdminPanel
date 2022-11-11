@@ -1,17 +1,20 @@
+import React from "react";
+
 import {useFormik} from "formik";
-import {setError} from "../state/appSlice";
 import {getAuth} from "firebase/auth";
-import FormControl from "@mui/material/FormControl";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
-import React, {FC} from "react";
+import {signInWithEmailAndPassword} from "firebase/auth";
+
+import {setError} from "../state/appSlice";
 import {useAppDispatch} from "../hooks/hooks";
 import {userSlice} from "../state/userSlice";
 
-export const LoginForm: FC<LoginFormPropsType> = ({signInWithEmailAndPassword, titleError}) => {
+export const LoginForm = () => {
     const dispatch = useAppDispatch();
     const {setUser} = userSlice.actions;
     const auth = getAuth();
@@ -41,7 +44,7 @@ export const LoginForm: FC<LoginFormPropsType> = ({signInWithEmailAndPassword, t
                 dispatch(setUser({email: values.email, password: values.password}));
                 formik.resetForm();
             } catch (err) {
-                dispatch(setError({error: titleError}))
+                dispatch(setError({error: 'Incorrect login or password'}))
             }
         },
     });
@@ -94,8 +97,4 @@ type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
-}
-type LoginFormPropsType = {
-    signInWithEmailAndPassword: any
-    titleError: null | string
 }

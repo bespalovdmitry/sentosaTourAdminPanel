@@ -5,11 +5,11 @@ import BasicSelect from "./BasicSelect";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import BasicTabs from "./BasicTabs";
-import {formSlice} from "../state/formReducer";
+import {formSlice} from "../state/formSlice";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
-import {db} from "../firebase/firebase";
+import {db} from "src/firebase/firebase";
 
 export type SelectType = {
     id: string

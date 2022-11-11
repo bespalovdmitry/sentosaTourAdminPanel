@@ -4,7 +4,6 @@ import {Navigate} from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import {signInWithEmailAndPassword} from "firebase/auth";
 import {useAuth} from 'src/hooks/use-auth';
 import {useAppSelector} from "src/hooks/hooks";
 import {ErrorSnackbar} from "src/common/ErrorSnackBar/ErrorSnackBar";
@@ -28,7 +27,7 @@ export const LoginPage = () => {
                         Login
                     </Typography>
                 </Toolbar>
-                <LoginForm titleError='Incorrect login or password' signInWithEmailAndPassword={signInWithEmailAndPassword}/>
+                <LoginForm />
             </Grid>
         </Grid>
     )
