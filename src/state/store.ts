@@ -3,11 +3,13 @@ import {configureStore} from "@reduxjs/toolkit";
 import formReducer from './formSlice'
 import appSlice from "src/state/appSlice";
 import userSlice from "src/state/userSlice";
+import adminPanelSlice from "./adminPanelSlice";
 
 const rootReducer = combineReducers({
     formReducer,
     userSlice,
-    appSlice
+    appSlice,
+    adminPanelSlice
 })
 
 export const setupStore = () => {

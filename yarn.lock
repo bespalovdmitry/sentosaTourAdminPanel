@@ -2229,35 +2229,49 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-data-grid-generator@^5.17.10":
-  version "5.17.10"
-  resolved "https://registry.yarnpkg.com/@mui/x-data-grid-generator/-/x-data-grid-generator-5.17.10.tgz#fa641a5f18c7d43055b934342429d71e50dc76fb"
-  integrity sha512-in9Rrusr9Wd4eQQCK9cpffmNVnaI9c7Dd8q9F63SRTEd/o0EViykJ0WF8mYudTmB6V+trXIhvUdDdmaM0aBCHA==
+"@mui/x-data-grid-generator@^5.17.11":
+  version "5.17.11"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid-generator/-/x-data-grid-generator-5.17.11.tgz#dc65cf79c72c0c31aeb2f5a3d8295d92eb54ac6c"
+  integrity sha512-ZWlCtQTgp6GPTXfJ+1ArTIhlZe2dOQ9/DHnzNKGAQ7TlXLWyqOblZiNd2+ptitGRPfW1lamr70lxn25HROZCog==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/base" "^5.0.0-alpha.97"
-    "@mui/x-data-grid-premium" "5.17.10"
+    "@mui/x-data-grid-premium" "5.17.11"
     chance "^1.1.8"
     clsx "^1.2.1"
     lru-cache "^7.14.0"
 
-"@mui/x-data-grid-premium@5.17.10":
-  version "5.17.10"
-  resolved "https://registry.yarnpkg.com/@mui/x-data-grid-premium/-/x-data-grid-premium-5.17.10.tgz#d0336e6e3d40dc1ee80b111d2f84ecac6e3cd3c6"
-  integrity sha512-SHh7Y3n1WASMoaySJYTUsxzIpSfaPUPRagrLSnLTVR/nw5TbmYRSQyHmKrWDYa/r/kDVQ3OU/rR4kjLV95o46w==
+"@mui/x-data-grid-premium@5.17.11":
+  version "5.17.11"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid-premium/-/x-data-grid-premium-5.17.11.tgz#27bd98b814c3c646b658b11498e2952dc183779b"
+  integrity sha512-FLCNijY5f75XcWdGL6ZhMC8SOvV0fDjpvy2UVljBiThk31dyeVye44Qk2/4nEEXMV1gmb9OR5nGqdj7DYoM8xQ==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/utils" "^5.10.3"
-    "@mui/x-data-grid" "5.17.10"
-    "@mui/x-data-grid-pro" "5.17.10"
-    "@mui/x-license-pro" "5.17.0"
+    "@mui/x-data-grid" "5.17.11"
+    "@mui/x-data-grid-pro" "5.17.11"
+    "@mui/x-license-pro" "5.17.11"
     "@types/format-util" "^1.0.2"
     clsx "^1.2.1"
     exceljs "^4.3.0"
     prop-types "^15.8.1"
     reselect "^4.1.6"
 
-"@mui/x-data-grid-pro@5.17.10", "@mui/x-data-grid-pro@^5.17.10":
+"@mui/x-data-grid-pro@5.17.11":
+  version "5.17.11"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid-pro/-/x-data-grid-pro-5.17.11.tgz#3dc989b7dc5dda01052a6d52a2255f39c1dcf3e8"
+  integrity sha512-cNcrRPUIR1VabbPJkoIWLVrOPFQJbN6i1KNg4BQKbH5RcUmbUqlfrF/WMcKP3nwv7a0hMnDq4jjdcS7qQsnHLQ==
+  dependencies:
+    "@babel/runtime" "^7.18.9"
+    "@mui/utils" "^5.10.3"
+    "@mui/x-data-grid" "5.17.11"
+    "@mui/x-license-pro" "5.17.11"
+    "@types/format-util" "^1.0.2"
+    clsx "^1.2.1"
+    prop-types "^15.8.1"
+    reselect "^4.1.6"
+
+"@mui/x-data-grid-pro@^5.17.10":
   version "5.17.10"
   resolved "https://registry.yarnpkg.com/@mui/x-data-grid-pro/-/x-data-grid-pro-5.17.10.tgz#58386f50f503c38fbc602529d4e251eda930cb19"
   integrity sha512-9yCfdBHEz7djdW74ILbL63R6X+ETkOJGCws0C9UQjmEUfKOrWQAu5+X/1mPTwBwhLGtdbqU8XX+TrAljACkemg==
@@ -2275,6 +2289,17 @@
   version "5.17.10"
   resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.17.10.tgz#0a92b855c19ff12a001dc36658def6d96a2a2dcd"
   integrity sha512-x0987WrcfuMUZpAGOl3a/Qh5ctDHyLDII1zNpm1zfAw1CgqaPTtwebUvGhtl0XguiKJuNW26kayqixjRcyaFJQ==
+  dependencies:
+    "@babel/runtime" "^7.18.9"
+    "@mui/utils" "^5.10.3"
+    clsx "^1.2.1"
+    prop-types "^15.8.1"
+    reselect "^4.1.6"
+
+"@mui/x-data-grid@5.17.11":
+  version "5.17.11"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.17.11.tgz#3a2a9889fb24030d8f11b03319638392d7df8752"
+  integrity sha512-9KaAsEHKTho/hXXSboxkewBI5HF9NwmgaHCjX7UCg/av3yP2wcWELui9mAWUjI6qm6+8hvKmKclf20ZZ+aPiNg==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/utils" "^5.10.3"
@@ -2307,6 +2332,14 @@
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/utils" "^5.9.3"
+
+"@mui/x-license-pro@5.17.11":
+  version "5.17.11"
+  resolved "https://registry.yarnpkg.com/@mui/x-license-pro/-/x-license-pro-5.17.11.tgz#9aaeba70ad64bfdc34437c9155c83132e890ae0b"
+  integrity sha512-Eu5ECjxDK5wyQEqMpTX3BwKqEGtwfdNyqH7mE+4sXt/75ALO41vzOv/6z3EoKVh7Lz32pnVV797wrOOBdmUrwA==
+  dependencies:
+    "@babel/runtime" "^7.18.9"
+    "@mui/utils" "^5.10.3"
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
