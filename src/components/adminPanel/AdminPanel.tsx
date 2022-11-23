@@ -1,15 +1,27 @@
 import React, {useEffect} from 'react';
 import {Navigate} from "react-router-dom";
-
 import {collection, onSnapshot} from "firebase/firestore";
 import Button from "@mui/material/Button";
 import {userSlice} from "src/state/userSlice";
 import {useAuth} from "src/hooks/use-auth";
 import {useAppDispatch, useAppSelector} from "src/hooks/hooks";
 import {db} from "src/firebase/firebase";
-import DetailPanelContent from "../adminPanel/table-admin-panel/TableAdminPanel"
-import {ApplicantsDataType, InitialStateType, setApplicants} from "../../state/adminPanelSlice";
-import BasicDetailPanels from "../adminPanel/table-admin-panel/TableAdminPanel";
+import {setApplicants} from "../../state/adminPanelSlice";
+import {ApplicantsDataType} from "../../models/applicantModel";
+import TableForAdminPanel from "./table-admin-panel/TableForAdminPanel";
+
+export type Row = {
+    id: number
+    applicantsData:ApplicantsDataType[],
+    file:any[],
+    fullPrice: number,
+    numberOfApplicants:string,
+    service: string,
+    email: string,
+    phone: string,
+    visaStatus: string,
+    visitPurpose:string,
+}
 
 export const AdminPanel = () => {
     // const isLoggedIn = useAppSelector(state => state.userSlice.isLoggedIn)
@@ -27,6 +39,25 @@ export const AdminPanel = () => {
         });
     }, [dispatch])
 
+    console.log(data)
+
+
+    let mappedData:Row[] = data.map((d, i) => {
+        return {
+            id: i,
+            applicantsData: d.applicantsData,
+            file: d.file,
+            fullPrice: d.fullPrice,
+            numberOfApplicants: d.numberOfApplicants,
+            service: d.service,
+            email: d.email,
+            phone: d.tel,
+            visaStatus: d.visa_status,
+            visitPurpose: d.visitPurpose,
+            uid: d.uid
+        }
+    })
+
     const onLogOutHandler = () => {
         dispatch(removeUser())
     }
@@ -34,32 +65,12 @@ export const AdminPanel = () => {
     if (!isAuth) {
         return <Navigate to='/login'/>
     }
-
     return (
         <div>
             <div>
                 <Button onClick={onLogOutHandler}>log out</Button>
             </div>
-            //тестовая разметка с данными
-{/*            <div>
-                {data.map((d, i) => {
-                    return (
-                        <div key={i}>
-                            <div>------------------</div>
-                            <div>email: {d.email}</div>
-                            <div>title: {d.file}</div>
-                            <div>fullPrice: {d.fullPrice}</div>
-                            <div>numberOfApplicants: {d.numberOfApplicants}</div>
-                            <div>service: {d.service}</div>
-                            <div>tel: {d.tel}</div>
-                            <div>uid: {d.uid}</div>
-                            <div>visa_status: {d.visa_status}</div>
-                            <div>visitPurpose: {d.visitPurpose}</div>
-                        </div>
-                    )
-                })}
-            </div>*/}
-            <BasicDetailPanels />
+            <TableForAdminPanel rows={mappedData}/>
         </div>
     );
 };

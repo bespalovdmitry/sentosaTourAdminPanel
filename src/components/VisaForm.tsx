@@ -9,7 +9,7 @@ import {formSlice} from "../state/formSlice";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
-import {db} from "src/firebase/firebase";
+import {db} from "../firebase/firebase";
 
 export type SelectType = {
     id: string

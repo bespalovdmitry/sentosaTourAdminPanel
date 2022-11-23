@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Dayjs} from "dayjs";
 import {Moment} from 'moment'
-import {applicantModel} from "../models/applicantModel";
 
 export const formSlice = createSlice({
     name: 'visaForm',

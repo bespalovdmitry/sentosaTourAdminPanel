@@ -2,12 +2,12 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const appSlice = createSlice({
     name: 'app',
-    initialState: <InitialStateType>{
+    initialState: {
         status: 'idle',
         error: null,
         user_access_level: null,
         email_user: null
-    },
+    } as InitialStateType,
     reducers: {
         setStatus: (state, action) => {
             state.status = action.payload.status;
