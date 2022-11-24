@@ -1,4 +1,26 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+
+
+export const loginTC = createAsyncThunk('app/login', async (params: { email: string, password: string }, {
+    dispatch
+}) => {
+    const auth = getAuth();
+
+    try {
+        await signInWithEmailAndPassword(auth, params.email, params.password);
+        dispatch(setLevel({level: params.email.slice(0,5)}));
+        return true
+    } catch (err) {
+        dispatch(setError({error: 'Incorrect login or password'}))
+        return false
+    }
+    finally {
+        setTimeout(() => {
+            dispatch(setError({error: null}))
+        }, 2000)
+    }
+})
 
 export const appSlice = createSlice({
     name: 'app',
@@ -6,9 +28,11 @@ export const appSlice = createSlice({
         status: 'idle',
         error: null,
         user_access_level: null,
-        email_user: null
     } as InitialStateType,
     reducers: {
+        setLevel: (state, action) => {
+            state.user_access_level = action.payload.level
+        },
         setStatus: (state, action) => {
             state.status = action.payload.status;
         },
@@ -18,7 +42,7 @@ export const appSlice = createSlice({
     }
 })
 
-export const {setStatus, setError} = appSlice.actions;
+export const {setLevel, setStatus, setError} = appSlice.actions;
 export default appSlice.reducer;
 
 //types
@@ -26,6 +50,5 @@ type InitialStateType = {
     status: 'loading' | 'idle'
     error: string | null
     user_access_level: 'admin' | 'manag' | 'agent' | null
-    email_user: 'admin@admin.ru' | 'user@user.ru' | null
 }
 
