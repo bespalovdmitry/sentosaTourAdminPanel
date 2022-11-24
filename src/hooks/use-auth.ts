@@ -1,10 +1,9 @@
 import {useAppSelector} from "./hooks";
 
 export const useAuth = () => {
-    const { email, password } = useAppSelector(state => state.userSlice);
+    const { user_access_level } = useAppSelector(state => state.appSlice);
 
     return {
-        isAuth: !!email,
-        password
+        isAuth: !!user_access_level
     }
 }
