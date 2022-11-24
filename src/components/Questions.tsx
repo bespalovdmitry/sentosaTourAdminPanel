@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import {FormControlLabel, Grid, Radio, RadioGroup, Stack, TextareaAutosize, TextField} from "@mui/material";
-import {formSlice} from "../state/formReducer";
+import {formSlice} from "../state/formSlice";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import AddressPassport from "./AddressPassport";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";

@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {formSlice} from "../state/formReducer";
+import {formSlice} from "../state/formSlice";
 
 type PropsType = {
     index: number

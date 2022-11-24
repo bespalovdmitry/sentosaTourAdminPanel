@@ -4,15 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import {setupStore} from "./state/store";
-import firebase from "firebase/compat/app";
 import 'firebase/firestore'
 import {BrowserRouter} from "react-router-dom";
+import {store} from './state/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const store = setupStore()
 root.render(
     <BrowserRouter>
         <Provider store={store}>

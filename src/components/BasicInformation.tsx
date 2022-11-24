@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import BasicSelect from "./BasicSelect";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {formSlice} from "../state/formReducer";
+import {formSlice} from "../state/formSlice";
 import {SelectType} from "./VisaForm";
 import {v1} from "uuid";
 

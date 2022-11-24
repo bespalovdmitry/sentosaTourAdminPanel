@@ -1,92 +1,48 @@
-import {createSlice, PayloadAction, PayloadActionCreator} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Dayjs} from "dayjs";
-import { Moment } from 'moment'
-import {applicantModel} from "../models/applicantModel";
-
-export type Applicant = {
-    name: string
-    gender: string
-    citizenship: string
-    maritalStatus: string
-    education: string
-    position: string
-    income: number | null
-    religion: string
-    passportNumber: string
-    passportAuthority: string
-    dateIssue: Moment | null
-    dateExpiry: Dayjs | null
-    dateBirth: Dayjs | null
-    homeAddress: string
-    city: string
-    postCode: number | null
-    country: string
-    arrivalDate: Dayjs | null
-    departureDate: Dayjs | null
-    flightTo: string
-    flightOut: string
-    departure: string
-    lived: string
-    livedCount: number
-    convicted: string
-    livedCountryApplicant: [
-        {livedCountry: string, livedFrom: Dayjs | null, livedTo: Dayjs | null, livedCity: string, livedAddress: string}
-    ]
-}
-
-export type InitialState = {
-    id: string
-    applicantCount: number
-    service: string
-    price: number
-    visit: string
-    email: string
-    tel: number | null
-    applicants: Applicant[]
-}
-const initialState: InitialState = {
-    id: '',
-    applicantCount: 1,
-    service: '',
-    price: 0,
-    visit: '',
-    email: '',
-    tel: null,
-    applicants: [{
-        name: '',
-        gender: '',
-        citizenship: '',
-        maritalStatus: '',
-        education: '',
-        position: '',
-        income: null,
-        religion: '',
-        passportNumber: '',
-        passportAuthority: '',
-        dateIssue: null,
-        dateExpiry: null,
-        dateBirth: null,
-        homeAddress: '',
-        city: '',
-        postCode: null,
-        country: '',
-        arrivalDate: null,
-        departureDate: null,
-        flightTo: '',
-        flightOut: '',
-        departure: '',
-        lived: '',
-        livedCount: 0,
-        convicted: '',
-        livedCountryApplicant: [
-            {livedCountry: '', livedFrom: null, livedTo: null, livedCity: '', livedAddress: ''}
-        ]
-    }],
-}
+import {Moment} from 'moment'
 
 export const formSlice = createSlice({
     name: 'visaForm',
-    initialState,
+    initialState: {
+        id: '',
+        applicantCount: 1,
+        service: '',
+        price: 0,
+        visit: '',
+        email: '',
+        tel: null,
+        applicants: [{
+            name: '',
+            gender: '',
+            citizenship: '',
+            maritalStatus: '',
+            education: '',
+            position: '',
+            income: null,
+            religion: '',
+            passportNumber: '',
+            passportAuthority: '',
+            dateIssue: null,
+            dateExpiry: null,
+            dateBirth: null,
+            homeAddress: '',
+            city: '',
+            postCode: null,
+            country: '',
+            arrivalDate: null,
+            departureDate: null,
+            flightTo: '',
+            flightOut: '',
+            departure: '',
+            lived: '',
+            livedCount: 0,
+            convicted: '',
+            livedCountryApplicant: [
+                {livedCountry: '', livedFrom: null, livedTo: null, livedCity: '', livedAddress: ''}
+            ]
+        }],
+    } as InitialState,
     reducers: {
         setOrderId(state, action: PayloadAction<string>) {
             state.id = action.payload
@@ -131,7 +87,7 @@ export const formSlice = createSlice({
         setService(state, action: PayloadAction<string>) {
             state.service = action.payload
         },
-        setPrice(state, action: PayloadAction<number>){
+        setPrice(state, action: PayloadAction<number>) {
             state.price = action.payload
         },
         setVisit(state, action: PayloadAction<string>) {
@@ -222,3 +178,46 @@ export const formSlice = createSlice({
 })
 
 export default formSlice.reducer
+
+//type
+export type Applicant = {
+    name: string
+    gender: string
+    citizenship: string
+    maritalStatus: string
+    education: string
+    position: string
+    income: number | null
+    religion: string
+    passportNumber: string
+    passportAuthority: string
+    dateIssue: Moment | null
+    dateExpiry: Dayjs | null
+    dateBirth: Dayjs | null
+    homeAddress: string
+    city: string
+    postCode: number | null
+    country: string
+    arrivalDate: Dayjs | null
+    departureDate: Dayjs | null
+    flightTo: string
+    flightOut: string
+    departure: string
+    lived: string
+    livedCount: number
+    convicted: string
+    livedCountryApplicant: [
+        { livedCountry: string, livedFrom: Dayjs | null, livedTo: Dayjs | null, livedCity: string, livedAddress: string }
+    ]
+}
+
+export type InitialState = {
+    id: string
+    applicantCount: number
+    service: string
+    price: number
+    visit: string
+    email: string
+    tel: number | null
+    applicants: Applicant[]
+}

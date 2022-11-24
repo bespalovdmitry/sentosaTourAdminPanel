@@ -1,17 +1,19 @@
-import {combineReducers} from "redux";
-import {configureStore} from "@reduxjs/toolkit";
-import formReducer from './formReducer'
-import loginSlice from 'src/state/loginSlice'
+import {AnyAction, combineReducers} from 'redux';
+import {configureStore, ThunkDispatch} from '@reduxjs/toolkit';
+import formReducer from './formSlice'
+import appSlice from "src/state/appSlice";
+import adminPanelSlice from "./adminPanelSlice";
 
 const rootReducer = combineReducers({
     formReducer,
-    loginSlice
+    appSlice,
+    adminPanelSlice
 })
 
-export const setupStore = () => {
-    return configureStore({
+export const store  =
+    configureStore({
         reducer: rootReducer,
-        middleware:(getDefaultMiddleware) => getDefaultMiddleware(
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware(
             {
                 serializableCheck: {
                     // Ignore these action types
@@ -21,10 +23,11 @@ export const setupStore = () => {
                     // Ignore these paths in the state
                     ignoredPaths: ['items.dates'],
                 }
-    },
+            },
         )
     })
-}
-export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+
+export type RootActionsType = AnyAction
+
+export type RootStateType = ReturnType<typeof store.getState>
+export type RootDispatchType = ThunkDispatch<RootStateType, unknown, RootActionsType>
