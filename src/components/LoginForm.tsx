@@ -1,29 +1,21 @@
-import React from "react";
-
-import {useFormik} from "formik";
-import {getAuth} from "firebase/auth";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import {signInWithEmailAndPassword} from "firebase/auth";
-
-import {setError} from "../state/appSlice";
-import {useAppDispatch} from "../hooks/hooks";
-import {userSlice} from "../state/userSlice";
+import React from 'react';
+import {useFormik} from 'formik';
+import Button from '@mui/material/Button';
+import FormGroup from '@mui/material/FormGroup';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import {loginTC,} from '../state/appSlice';
+import {useAppDispatch} from '../hooks/hooks';
+import {useNavigate} from 'react-router-dom';
 
 export const LoginForm = () => {
     const dispatch = useAppDispatch();
-    const {setUser} = userSlice.actions;
-    const auth = getAuth();
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
             email: '',
-            password: '',
-            rememberMe: false
+            password: ''
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
@@ -37,14 +29,10 @@ export const LoginForm = () => {
             return errors;
         },
         onSubmit: async values => {
-            dispatch(setError({error: null}))
-            try {
-                await signInWithEmailAndPassword(auth, values.email, values.password);
-
-                dispatch(setUser({email: values.email, password: values.password}));
+            let res = await dispatch(loginTC(values))
+            if (res) {
                 formik.resetForm();
-            } catch (err) {
-                dispatch(setError({error: 'Incorrect login or password'}))
+                navigate('/visa')
             }
         },
     });
@@ -75,16 +63,7 @@ export const LoginForm = () => {
                         ? <div style={{color: 'red'}}>{formik.errors.password}</div>
                         : null
                 }
-                <FormControlLabel
-                    label={'Remember me'}
-                    control={
-                        <Checkbox
-                            onChange={formik.handleChange}
-                            checked={formik.values.rememberMe}
-                            name="rememberMe"
-                        />
-                    }/>
-                <Button type={'submit'} variant={'contained'} color={'primary'}>
+                <Button type={'submit'} variant={'contained'} color={'primary'} sx={{marginTop: 2}}>
                     Continue
                 </Button>
             </FormGroup>
