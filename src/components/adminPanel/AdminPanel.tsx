@@ -1,12 +1,6 @@
 import React, {useEffect} from 'react';
-import {Navigate} from "react-router-dom";
-import {collection, onSnapshot} from "firebase/firestore";
-import Button from "@mui/material/Button";
-import {userSlice} from "src/state/userSlice";
-import {useAuth} from "src/hooks/use-auth";
 import {useAppDispatch, useAppSelector} from "src/hooks/hooks";
-import {db} from "src/firebase/firebase";
-import {setApplicants} from "../../state/adminPanelSlice";
+import {fetchDataTC} from '../../state/adminPanelSlice';
 import {ApplicantsDataType} from "../../models/applicantModel";
 import TableForAdminPanel from "./table-admin-panel/TableForAdminPanel";
 
@@ -24,27 +18,17 @@ export type Row = {
 }
 
 export const AdminPanel = () => {
-    // const isLoggedIn = useAppSelector(state => state.userSlice.isLoggedIn)
-    const {isAuth} = useAuth();
-    const {removeUser} = userSlice.actions;
     const dispatch = useAppDispatch()
-    const applicants = useAppSelector(state => state.formReducer)
     const data = useAppSelector(state => state.adminPanelSlice)
 
     useEffect(() => {
-        return onSnapshot(collection(db, "root_applicant"), doc => {
-            doc.forEach(d => {
-                dispatch(setApplicants(d.data()))
-            })
-        });
-    }, [dispatch])
-
-    console.log(data)
-
+        dispatch(fetchDataTC())
+    }, [])
 
     let mappedData:Row[] = data.map((d, i) => {
         return {
             id: i,
+            appDate: d.appDate,
             applicantsData: d.applicantsData,
             file: d.file,
             fullPrice: d.fullPrice,
@@ -58,18 +42,10 @@ export const AdminPanel = () => {
         }
     })
 
-    const onLogOutHandler = () => {
-        dispatch(removeUser())
-    }
 
-    if (!isAuth) {
-        return <Navigate to='/login'/>
-    }
+
     return (
-        <div>
-            <div>
-                <Button onClick={onLogOutHandler}>log out</Button>
-            </div>
+        <div className={'p-8'}>
             <TableForAdminPanel rows={mappedData}/>
         </div>
     );
