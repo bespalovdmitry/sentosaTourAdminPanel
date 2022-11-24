@@ -1,19 +1,17 @@
-import {combineReducers} from "redux";
-import {configureStore} from "@reduxjs/toolkit";
+import {AnyAction, combineReducers} from 'redux';
+import {configureStore, ThunkDispatch} from '@reduxjs/toolkit';
 import formReducer from './formSlice'
 import appSlice from "src/state/appSlice";
-import userSlice from "src/state/userSlice";
 import adminPanelSlice from "./adminPanelSlice";
 
 const rootReducer = combineReducers({
     formReducer,
-    userSlice,
     appSlice,
     adminPanelSlice
 })
 
-export const setupStore = () => {
-    return configureStore({
+export const store  =
+    configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware(
             {
@@ -28,7 +26,8 @@ export const setupStore = () => {
             },
         )
     })
-}
-export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+
+export type RootActionsType = AnyAction
+
+export type RootStateType = ReturnType<typeof store.getState>
+export type RootDispatchType = ThunkDispatch<RootStateType, unknown, RootActionsType>
