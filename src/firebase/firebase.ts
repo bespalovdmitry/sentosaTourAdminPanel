@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import {initializeApp} from 'firebase/app';
+import {collection, getFirestore, getDocs} from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,3 +13,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+export const firebaseAPI = {
+    getData: async () => {
+        const docRef = collection(db, 'root_applicant');
+        const docSnap = await getDocs(docRef);
+        let res: any = []
+        docSnap.forEach(el => {
+            res = [...res, el.data()]
+        })
+        return res
+    }
+}
