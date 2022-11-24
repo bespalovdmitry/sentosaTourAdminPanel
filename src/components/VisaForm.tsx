@@ -1,15 +1,15 @@
 import React from 'react';
-import {Container, CssBaseline, Divider, Grid, TextField} from "@mui/material";
-import {v1} from "uuid";
-import BasicSelect from "./BasicSelect";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import BasicTabs from "./BasicTabs";
-import {formSlice} from "../state/formSlice";
-import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import Button from "@mui/material/Button";
-import { collection, addDoc } from "firebase/firestore";
-import {db} from "../firebase/firebase";
+import {Container, CssBaseline, Divider, Grid, TextField} from '@mui/material';
+import {v1} from 'uuid';
+import BasicSelect from './BasicSelect';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import BasicTabs from './BasicTabs';
+import {formSlice} from '../state/formSlice';
+import {useAppDispatch, useAppSelector} from '../hooks/hooks';
+import Button from '@mui/material/Button';
+import {collection, addDoc} from 'firebase/firestore';
+import {db} from '../firebase/firebase';
 
 export type SelectType = {
     id: string
@@ -83,19 +83,19 @@ const VisaForm = () => {
     }
     const onClickHandler = async () => {
         try {
-            const docRef = await addDoc(collection(db, "visaApplications"), {
+            const docRef = await addDoc(collection(db, 'visaApplications'), {
                 applications: rootApplicant
             });
-            console.log("Document written with ID: ", docRef.id);
+            console.log('Document written with ID: ', docRef.id);
         } catch (e) {
-            console.error("Error adding document: ", e);
+            console.error('Error adding document: ', e);
         }
     }
     return (
-        <React.Fragment>
+        <div className={'p-4'}>
             <CssBaseline/>
-            <Container maxWidth={"xl"}>
-                <Grid container spacing={2} justifyContent={"flex-end"}>
+            <Container className={'py-10 border rounded-xl'} maxWidth={'xl'}>
+                <Grid container spacing={2} justifyContent={'flex-end'}>
                     <Grid item xs={4}>
                         <BasicSelect
                             value={rootApplicant.service}
@@ -158,11 +158,11 @@ const VisaForm = () => {
                         </Box>
                     </Grid>
                 </Grid>
-                <Divider variant={"fullWidth"} sx={{mt: 2, mb: 3}}/>
+                <Divider variant={'fullWidth'} sx={{mt: 2, mb: 3}}/>
                 <BasicTabs/>
             </Container>
 
-        </React.Fragment>
+        </div>
     );
 };
 
