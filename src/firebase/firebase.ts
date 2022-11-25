@@ -1,5 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import {collection, getFirestore, getDocs} from 'firebase/firestore';
+import {deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes} from 'firebase/storage'
+import {collection, getFirestore, getDocs, deleteDoc, doc} from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,6 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+const storage = getStorage(app)
 
 export const firebaseAPI = {
     getData: async () => {
@@ -23,5 +25,19 @@ export const firebaseAPI = {
             res = [...res, el.data()]
         })
         return res
+    },
+    delData: async (email: string, date: string) => {
+        const docRef = doc(db, 'root_applicant', `${email} - ${date}`);
+        await deleteDoc(docRef);
+    },
+
+    delFile: (name: string) => {
+        const desertRef = ref(storage, 'contactFrom/' + name);
+
+        // Delete the file
+        deleteObject(desertRef).then(() => {
+            console.log('deleted')
+        })
+
     }
 }
