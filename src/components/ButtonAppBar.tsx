@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../hooks/use-auth';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import {setLevel} from '../state/appSlice';
+import {logoutTC} from '../state/appSlice';
 
 export default function ButtonAppBar() {
     const navigate = useNavigate()
@@ -27,6 +27,9 @@ export default function ButtonAppBar() {
         setAnchorEl(null);
     };
 
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -66,13 +69,11 @@ export default function ButtonAppBar() {
                         </>
                     )}
 
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1, cursor: 'default', textAlign:'center'}}>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1, cursor: 'default', textAlign: 'center'}}>
                         Sentosa Tour Admin Panel
                     </Typography>
                     {isAuth
-                        ? <Button color="inherit" onClick={() => {
-                            dispatch(setLevel({level: null}))
-                        }}>Logout</Button>
+                        ? <Button color="inherit" onClick={logoutHandler}>Logout</Button>
                         : <Button color="inherit" onClick={() => navigate('/')}>Login</Button>
                     }
                 </Toolbar>
