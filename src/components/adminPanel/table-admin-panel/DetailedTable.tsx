@@ -1,11 +1,11 @@
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
 import {DataGridPro, GridCallbackDetails, GridRowParams, MuiEvent} from '@mui/x-data-grid-pro';
 import * as React from 'react';
-import {ApplicantsDataType} from '../../../models/applicantModel';
 import {useState} from 'react';
+import {ApplicantsDataType} from '../../../models/applicantModel';
 import {ModalContent} from './ModalContent';
+import Dialog from "@mui/material/Dialog";
 
 type Props = {
     row: ApplicantsDataType[]
@@ -17,8 +17,18 @@ export default function DetailedTable(props: Props) {
     const [item, setItem] = useState<ApplicantsDataType | undefined>(undefined)
 
     const handleClose = () => {
-        setOpen(false)
-    }
+        setOpen(false);
+    };
+    const descriptionElementRef = React.useRef<HTMLElement>(null);
+
+    React.useEffect(() => {
+        if (open) {
+            const { current: descriptionElement } = descriptionElementRef;
+            if (descriptionElement !== null) {
+                descriptionElement.focus();
+            }
+        }
+    }, [open]);
 
     const rawData = props.row
 
@@ -81,13 +91,15 @@ export default function DetailedTable(props: Props) {
                     />
                 </Stack>
 
-                <Modal
+                <Dialog
                     open={open}
-                    onClose={handleClose}>
-                    <div>
-                        <ModalContent item={item}/>
-                    </div>
-                </Modal>
+                    onClose={handleClose}
+                    scroll={"paper"}
+                    aria-labelledby="scroll-dialog-title"
+                    aria-describedby="scroll-dialog-description"
+                >
+                        <ModalContent item={item} descriptionElementRef={descriptionElementRef}/>
+                </Dialog>
             </Paper>
         </Stack>
     );
