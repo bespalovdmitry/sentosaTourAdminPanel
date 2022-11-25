@@ -3,6 +3,7 @@ import {useAppDispatch, useAppSelector} from "src/hooks/hooks";
 import {fetchDataTC} from '../../state/adminPanelSlice';
 import {ApplicantsDataType} from "../../models/applicantModel";
 import TableForAdminPanel from "./table-admin-panel/TableForAdminPanel";
+import moment from 'moment/moment';
 
 export type Row = {
     id: number
@@ -28,7 +29,7 @@ export const AdminPanel = () => {
     let mappedData:Row[] = data.map((d, i) => {
         return {
             id: i,
-            appDate: d.appDate,
+            appDate: moment(d.appDate).format('D/M/YYYY, hh:mm'),
             applicantsData: d.applicantsData,
             file: d.file,
             fullPrice: d.fullPrice,
@@ -38,10 +39,9 @@ export const AdminPanel = () => {
             phone: d.tel,
             visaStatus: d.visa_status,
             visitPurpose: d.visitPurpose,
-            uid: d.uid
+            uid: d.uid,
         }
     })
-
 
 
     return (
