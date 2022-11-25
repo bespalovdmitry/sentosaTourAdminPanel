@@ -1,6 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence} from 'firebase/auth';
+import {getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, signOut} from 'firebase/auth';
 
+
+export const fetchLogin = createAsyncThunk('app/fetch_login', async (email:string, {
+    dispatch
+}) => {
+    await dispatch(setLevel({level: email.slice(0, 5)}));
+    return true
+})
 
 export const loginTC = createAsyncThunk('app/login', async (params: { email: string, password: string }, {
     dispatch
@@ -25,11 +32,12 @@ export const loginTC = createAsyncThunk('app/login', async (params: { email: str
     }
 })
 
-export const fetchLogin = createAsyncThunk('app/login', async (email:string, {
+export const logoutTC = createAsyncThunk('app/logout', async (params, {
     dispatch
 }) => {
-        await dispatch(setLevel({level: email.slice(0, 5)}));
-        return true
+    dispatch(setLevel({level: null}))
+    const auth = getAuth();
+    signOut(auth)
 })
 
 export const appSlice = createSlice({
