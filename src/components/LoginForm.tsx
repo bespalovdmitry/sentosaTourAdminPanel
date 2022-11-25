@@ -1,16 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
 import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import {loginTC,} from '../state/appSlice';
+import CircularProgress from '@mui/material/CircularProgress';
+import {fetchLogin, loginTC,} from '../state/appSlice';
 import {useAppDispatch} from '../hooks/hooks';
 import {useNavigate} from 'react-router-dom';
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {getAuth} from 'firebase/auth';
 
 export const LoginForm = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
+    const auth = getAuth();
+    const [user, loading] = useAuthState(auth);
+    useEffect(() => {
+        const getLogin = async () => {
+            if (user && user.email) {
+                return dispatch(fetchLogin(user.email));
+            }
+        }
+        getLogin().then((res) => res && navigate('/visa'))
+    }, [loading])
 
     const formik = useFormik({
         initialValues: {
@@ -36,6 +49,10 @@ export const LoginForm = () => {
             }
         },
     });
+
+    if(loading){
+        return <CircularProgress />
+    }
 
     return <form onSubmit={formik.handleSubmit}>
         <FormControl>
