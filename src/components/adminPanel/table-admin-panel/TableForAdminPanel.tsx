@@ -6,6 +6,7 @@ import DetailedTable from './DetailedTable';
 import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {useState} from 'react';
+import InformModal from "../../informModal";
 
 type Props = { rows: Row[] }
 /*const commonModalState = {
@@ -30,10 +31,17 @@ type CommonModalStateType = typeof commonModalState*/
 
 
 export default function TableForAdminPanel({rows}: Props) {
-   /* const [modalData, setModalData] = useState<CommonModalStateType>(commonModalState)
-    const openDeletePackModal = (_id: string, name: string) => {
-        setModalData({...modalData, _id, name, title: 'Delete Pack', openDelPackModal: true})
-    }*/
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+    const [objForModal, setObjForModal] = useState({
+        email:'',
+        uid: '',
+        service: '',
+
+    })
+    /* const [modalData, setModalData] = useState<CommonModalStateType>(commonModalState)
+     const openDeletePackModal = (_id: string, name: string) => {
+         setModalData({...modalData, _id, name, title: 'Delete Pack', openDelPackModal: true})
+     }*/
 
     const columns = [
         {field: 'appDate', headerName: 'Date', flex: 1, minWidth: 140},
@@ -45,16 +53,18 @@ export default function TableForAdminPanel({rows}: Props) {
         {field: 'phone', headerName: 'Phone', flex: 1},
         {field: 'visaStatus', headerName: 'Visa Status', flex: 1},
         {field: 'visitPurpose', headerName: 'Visit purpose', flex: 1},
-        {field: 'uid', flex: 1},
-    /* {filed: 'actions',  headerName: 'Actions', flex:1,
-         renderCell: (params) => (
-             <>
-                     <IconButton onClick={() => openDeletePackModal(params.row._id, params.row.name)}>
-                         <DeleteOutlineIcon/>
-                     </IconButton>
-             </>
-         ),
-        }*/
+        {field: 'uid', headerName: 'UID', flex: 1},
+        {field: 'actions', headerName: 'Actions', flex: 1,
+            renderCell: (params: any) => (
+                <>
+                    <IconButton onClick={() => {
+                        setModalIsOpen(true)
+                    }} color={'error'}>
+                        <DeleteOutlineIcon/>
+                    </IconButton>
+                </>
+            ),
+        },
     ];
 
     const getDetailPanelHeight = React.useCallback(() => 300, []);
@@ -82,6 +92,14 @@ export default function TableForAdminPanel({rows}: Props) {
                 getRowClassName={(params) => `${setRowColor(params.row.service)}`}
                 disableSelectionOnClick
                 pagination
+            />
+            <InformModal
+                title={'Confirm deleting'}
+                description={`Do you really want to delete 123  application `}
+                actionName={'Delete'}
+                onClose={() => setModalIsOpen(false)}
+                isOpen={modalIsOpen}
+                onSuccess={() => {console.log('deleted')}}
             />
         </Box>
     );
