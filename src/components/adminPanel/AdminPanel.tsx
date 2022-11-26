@@ -8,7 +8,7 @@ import moment from 'moment/moment';
 export type Row = {
     id: number
     applicantsData:ApplicantsDataType[],
-    file:any[],
+    file:string[],
     fullPrice: number,
     numberOfApplicants:string,
     service: string,
