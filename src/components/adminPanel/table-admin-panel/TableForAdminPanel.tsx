@@ -57,10 +57,14 @@ export default function TableForAdminPanel({rows}: Props) {
         }*/
     ];
 
-    const getDetailPanelHeight = React.useCallback(() => 400, []);
+    const getDetailPanelHeight = React.useCallback(() => 300, []);
 
     const getDetailPanelContent = React.useCallback<NonNullable<DataGridProProps['getDetailPanelContent']>>(({row}) =>
         <DetailedTable row={row.applicantsData}/>, []);
+
+    const setRowColor = (serviceName: string) => {
+        return (serviceName === 'Срочная виза без отеля-120') || (serviceName === 'Срочная виза с отелем-100') ? 'bg-orange-100' : '';
+    }
 
     return (
         <Box sx={{width: '90%', height: '80vh', margin: '0 auto'}}>
@@ -75,6 +79,7 @@ export default function TableForAdminPanel({rows}: Props) {
                 rows={rows}
                 getDetailPanelHeight={getDetailPanelHeight}
                 getDetailPanelContent={getDetailPanelContent}
+                getRowClassName={(params) => `${setRowColor(params.row.service)}`}
                 disableSelectionOnClick
                 pagination
             />
