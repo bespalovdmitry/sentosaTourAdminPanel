@@ -6,17 +6,16 @@ import VisaForm from 'src/components/VisaForm';
 import {AdminPanel} from 'src/components/adminPanel/AdminPanel';
 import {LoginPage} from 'src/pages/LoginPage/LoginPage';
 import {useAppSelector} from 'src/hooks/hooks';
-import {ErrorSnackbar} from 'src/common/ErrorSnackBar/ErrorSnackBar';
+import {UniversalSnackbar} from 'src/common/ErrorSnackBar/UniversalSnackbar';
 import {AdminRoutes} from './components/AdminRoutes';
 import {ManagRoutes} from './components/ManagRoutes';
 
 function App() {
     const status = useAppSelector(state => state.appSlice.status);
-    const error = useAppSelector(state => state.appSlice.error);
 
     return (
         <div>
-            {error && <ErrorSnackbar/>}
+            <UniversalSnackbar/>
             <ButtonAppBar/>
             {status === 'loading'
                 && <LinearProgress sx={{position: 'absolute', left: 0, right: 0, top: 64}}/>
