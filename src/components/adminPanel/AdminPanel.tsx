@@ -29,6 +29,7 @@ export const AdminPanel = () => {
     let mappedData:Row[] = data.map((d, i) => {
         return {
             id: i,
+            rawData: d.appDate,
             appDate: moment(d.appDate).format('D/M/YYYY, hh:mm'),
             applicantsData: d.applicantsData,
             file: d.file,
