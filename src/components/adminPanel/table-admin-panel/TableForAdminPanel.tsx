@@ -7,6 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {useState} from 'react';
 import InformModal from "../../informModal";
+import moment from "moment";
+import {useAppDispatch} from "../../../hooks/hooks";
+import {delApplicationTC} from "../../../state/adminPanelSlice";
 
 type Props = { rows: Row[] }
 /*const commonModalState = {
@@ -29,21 +32,27 @@ type Props = { rows: Row[] }
 }
 type CommonModalStateType = typeof commonModalState*/
 
+export type ObjForModalType = {
+    email: string
+    date: string
+    service: string
+    id: number | null
+}
+
 
 export default function TableForAdminPanel({rows}: Props) {
+    const dispatch = useAppDispatch()
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
-    const [objForModal, setObjForModal] = useState({
-        email:'',
-        uid: '',
+    const [objForModal, setObjForModal] = useState<ObjForModalType>({
+        id: null,
+        email: '',
+        date: '',
         service: '',
 
     })
-    /* const [modalData, setModalData] = useState<CommonModalStateType>(commonModalState)
-     const openDeletePackModal = (_id: string, name: string) => {
-         setModalData({...modalData, _id, name, title: 'Delete Pack', openDelPackModal: true})
-     }*/
 
     const columns = [
+        {field: 'rawData', headerName: 'rawData', flex: 1, hide: true},
         {field: 'appDate', headerName: 'Date', flex: 1, minWidth: 140},
         {field: 'email', headerName: 'Email', flex: 1, minWidth: 220},
         {field: 'file', headerName: 'Files', flex: 1},
@@ -54,10 +63,17 @@ export default function TableForAdminPanel({rows}: Props) {
         {field: 'visaStatus', headerName: 'Visa Status', flex: 1},
         {field: 'visitPurpose', headerName: 'Visit purpose', flex: 1},
         {field: 'uid', headerName: 'UID', flex: 1},
-        {field: 'actions', headerName: 'Actions', flex: 1,
+        {
+            field: 'actions', headerName: 'Actions', flex: 1,
             renderCell: (params: any) => (
                 <>
                     <IconButton onClick={() => {
+                        setObjForModal({
+                            email: params.row.email,
+                            date: params.row.rawData,
+                            service: params.row.service,
+                            id: params.row.id
+                        })
                         setModalIsOpen(true)
                     }} color={'error'}>
                         <DeleteOutlineIcon/>
@@ -95,11 +111,26 @@ export default function TableForAdminPanel({rows}: Props) {
             />
             <InformModal
                 title={'Confirm deleting'}
-                description={`Do you really want to delete 123  application `}
+                description={
+                    <>
+                        <p>Do you really want to delete: <b>{objForModal.service}</b></p>
+                        <p><b>on e-mail:</b> {objForModal.email}</p>
+                        <p><b>on a date:</b> {moment(objForModal.date).format('D/M/YYYY, hh:mm')}</p>
+                    </>
+                }
                 actionName={'Delete'}
                 onClose={() => setModalIsOpen(false)}
                 isOpen={modalIsOpen}
-                onSuccess={() => {console.log('deleted')}}
+                onSuccess={() => {
+                    setModalIsOpen(false)
+                    if (objForModal.id) {
+                        dispatch(delApplicationTC({
+                            date: objForModal.date,
+                            email: objForModal.email,
+                            id: objForModal!.id
+                        }))
+                    }
+                }}
             />
         </Box>
     );
