@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ApplicantsDataType} from '../models/applicantModel';
 import {firebaseAPI} from '../firebase/firebase';
-import {setMessage, setStatus} from './appSlice';
+import {setError, setMessage, setStatus} from './appSlice';
 
 
 export const fetchDataTC = createAsyncThunk('adminPanel/fetchData', async (param, {
@@ -23,14 +23,16 @@ export const delApplicationTC = createAsyncThunk('adminPanel/delApplication', as
     dispatch,
     rejectWithValue
 }) => {
+    dispatch(setStatus({status: 'loading'}))
     try {
         await firebaseAPI.delData(params.email, params.date)
+        dispatch(setMessage({message: 'Заявка успешно удалена'}))
         return params.id
     } catch {
+        dispatch(setError({error: 'Ошибка при удалении'}))
         return rejectWithValue(null)
-    }
-    finally {
-        dispatch(setMessage({message: 'Заявка успешно удалена'}))
+    } finally {
+        dispatch(setStatus({status: 'idle'}))
     }
 })
 
