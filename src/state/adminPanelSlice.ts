@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ApplicantsDataType} from '../models/applicantModel';
 import {firebaseAPI} from '../firebase/firebase';
-import {setStatus} from './appSlice';
+import {setMessage, setStatus} from './appSlice';
 
 
 export const fetchDataTC = createAsyncThunk('adminPanel/fetchData', async (param, {
@@ -16,6 +16,21 @@ export const fetchDataTC = createAsyncThunk('adminPanel/fetchData', async (param
         return rejectWithValue(null)
     } finally {
         dispatch(setStatus({status: 'idle'}))
+    }
+})
+
+export const delApplicationTC = createAsyncThunk('adminPanel/delApplication', async (params: { id: number, email: string, date: string }, {
+    dispatch,
+    rejectWithValue
+}) => {
+    try {
+        await firebaseAPI.delData(params.email, params.date)
+        return params.id
+    } catch {
+        return rejectWithValue(null)
+    }
+    finally {
+        dispatch(setMessage({message: 'Заявка успешно удалена'}))
     }
 })
 
@@ -36,9 +51,14 @@ export const adminPanelSlice = createSlice({
     }] as InitialStateType,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(fetchDataTC.fulfilled, (state, action) => {
-            return action.payload
-        })
+        builder
+            .addCase(fetchDataTC.fulfilled, (state, action) => {
+                return action.payload
+            })
+            .addCase(delApplicationTC.fulfilled, (state, action) => {
+                let index = action.payload
+                state.splice(index, 1);
+            })
     }
 })
 
