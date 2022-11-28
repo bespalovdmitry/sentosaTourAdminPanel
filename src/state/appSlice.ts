@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, signOut} from 'firebase/auth';
 
 
-export const fetchLogin = createAsyncThunk('app/fetch_login', async (email:string, {
+export const fetchLogin = createAsyncThunk('app/fetch_login', async (email: string, {
     dispatch
 }) => {
     await dispatch(setLevel({level: email.slice(0, 5)}));
@@ -17,15 +17,14 @@ export const loginTC = createAsyncThunk('app/login', async (params: { email: str
         await setPersistence(auth, browserLocalPersistence);
     })();
 
-   try {
+    try {
         await signInWithEmailAndPassword(auth, params.email, params.password);
-        dispatch(setLevel({level: params.email.slice(0,5)}));
+        dispatch(setLevel({level: params.email.slice(0, 5)}));
         return true
     } catch (err) {
         dispatch(setError({error: 'Incorrect login or password'}))
         return false
-    }
-    finally {
+    } finally {
         setTimeout(() => {
             dispatch(setError({error: null}))
         }, 2000)
@@ -45,6 +44,7 @@ export const appSlice = createSlice({
     initialState: {
         status: 'idle',
         error: null,
+        message: null,
         user_access_level: null,
     } as InitialStateType,
     reducers: {
@@ -54,19 +54,23 @@ export const appSlice = createSlice({
         setStatus: (state, action) => {
             state.status = action.payload.status;
         },
+        setMessage: (state, action) => {
+            state.message = action.payload.message;
+        },
         setError: (state, action) => {
             state.error = action.payload.error;
         }
     }
 })
 
-export const {setLevel, setStatus, setError} = appSlice.actions;
+export const {setLevel, setStatus, setError, setMessage} = appSlice.actions;
 export default appSlice.reducer;
 
 //types
 type InitialStateType = {
     status: 'loading' | 'idle'
     error: string | null
+    message: string | null
     user_access_level: 'admin' | 'manag' | 'agent' | null
 }
 
