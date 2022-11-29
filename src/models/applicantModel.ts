@@ -29,50 +29,56 @@
 //     ]
 // }
 
-export type ApplicantsDataType = {
-    additionFiles: []
-    anotherPassportOrNameFiles: []
-    birthDate: string
-    citizenship: string
-    earlyVisaFiles: []
-    education: string
-    familyStatus: string
-    fliesFrom: string
-    flightInDate: string
-    flightInNumber: string
-    flightOutDate: string
-    flightOutNumber: string
+export type ApplicantDataType = {
+    //Technical type
+    [index: string]: any
+
     fullName: string
-    hasAnotherPassport: string
-    hasAnotherPassportData: string[]
-    hasConvicted: string
-    hasConvictedData: string
-    hasDeported: string
-    hasDeportedData: string
-    hasLivedInNonResidenceCountry: string
-    hasLivedInNonResidenceCountryData: { country: string, date: string }[]
-    hasVisaBefore: string
-    hasVisaBeforeData: string[]
-    hasVisaReject: string
-    hasVisaRejectData: string[]
-    importantDataToCheck: {}
-    inTicketsFiles: string[]
-    mainApplicantIs: string
     male: string
-    outTicketsFiles: string[]
-    passportCopyFiles: string[]
+    citizenship: string
+    familyStatus: string
+    mainApplicantIs: string
+    religion: string
+    yearIncome: string
+    education: string
+    position: string
+
+    passportCopyFiles: Array<string>
     passportCountry: string
-    passportData: string
-    passportExpire: string
     passportIssuedBy: string
     passportNumber: string
-    photoFiles: string[]
-    position: string
-    rejectFiles: []
-    religion: string
-    residenceAddress: string
-    residenceCity: string
+    passportData: string
+    passportExpire: string
+    birthDate: string
+
     residenceCountry: string
+    residenceCity: string
+    residenceAddress: string
     residenceIndex: string
-    yearIncome: string
+
+    fliesFrom: string
+    flightInNumber: string
+    flightInDate: string
+    flightOutNumber: string
+    flightOutDate: string
+
+    hasVisaBefore: string
+    hasVisaBeforeData: Array<string>
+    hasLivedInNonResidenceCountry: string
+    hasLivedInNonResidenceCountryData: Array<{ country: string, date: string, address: string }>
+    hasDeported: string
+    hasDeportedData: string
+    hasConvicted: string
+    hasConvictedData: string
+    hasVisaReject: string
+    hasVisaRejectData: Array<string>
+    hasAnotherPassport: string
+    hasAnotherPassportData: Array<string>
+
+    photoFiles: Array<string>
+    inTicketsFiles: Array<string>
+    outTicketsFiles: Array<string>
+    additionFiles: Array<string>
+    bookingHotel: Array<string>
+    hotelsData: Array<{ hotelName: string, arrivalDate: string, departureDate: string, hotelAddress: string, bookingHotel: Array<string> }>
 }

@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "src/hooks/hooks";
 import {fetchDataTC} from '../../state/adminPanelSlice';
-import {ApplicantsDataType} from "../../models/applicantModel";
+import {ApplicantDataType} from "../../models/applicantModel";
 import TableForAdminPanel from "./table-admin-panel/TableForAdminPanel";
 import moment from 'moment/moment';
 
 export type Row = {
     id: number
-    applicantsData:ApplicantsDataType[],
+    applicantsData:ApplicantDataType[],
     file:string[],
     fullPrice: number,
     numberOfApplicants:string,

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {ApplicantsDataType} from '../models/applicantModel';
+import {ApplicantDataType} from '../models/applicantModel';
 import {firebaseAPI} from '../firebase/firebase';
 import {setError, setMessage, setStatus} from './appSlice';
 
@@ -71,7 +71,7 @@ export type InitialStateType = Array<ApplicationType>;
 
 type ApplicationType = {
     appDate: string
-    applicantsData: ApplicantsDataType[]
+    applicantsData: ApplicantDataType[]
     email: string
     file: []
     fullPrice: number
