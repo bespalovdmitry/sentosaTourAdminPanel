@@ -3,18 +3,19 @@ import Paper from '@mui/material/Paper';
 import {DataGridPro, GridCallbackDetails, GridRowParams, MuiEvent} from '@mui/x-data-grid-pro';
 import * as React from 'react';
 import {useState} from 'react';
-import {ApplicantsDataType} from '../../../models/applicantModel';
+import {ApplicantDataType} from '../../../models/applicantModel';
 import {ModalContent} from './ModalContent';
-import Dialog from "@mui/material/Dialog";
+import Dialog from '@mui/material/Dialog';
 
 type Props = {
-    row: ApplicantsDataType[]
+    row: ApplicantDataType[]
+    applicantDataID: number
 }
 
 export default function DetailedTable(props: Props) {
 
     const [open, setOpen] = useState(false)
-    const [item, setItem] = useState<ApplicantsDataType | undefined>(undefined)
+    const [itemID, setItemID] = useState<number | undefined>(undefined)
 
     const handleClose = () => {
         setOpen(false);
@@ -23,7 +24,7 @@ export default function DetailedTable(props: Props) {
 
     React.useEffect(() => {
         if (open) {
-            const { current: descriptionElement } = descriptionElementRef;
+            const {current: descriptionElement} = descriptionElementRef;
             if (descriptionElement !== null) {
                 descriptionElement.focus();
             }
@@ -32,7 +33,7 @@ export default function DetailedTable(props: Props) {
 
     const rawData = props.row
 
-    let detailedRawData = rawData.map((m: ApplicantsDataType, i: number) => {
+    let detailedRawData = rawData.map((m: ApplicantDataType, i: number) => {
         return {
             id: i,
             mainApplicantIs: m.mainApplicantIs,
@@ -50,11 +51,6 @@ export default function DetailedTable(props: Props) {
             passportNumber: m.passportNumber,
         }
     })
-//id - it's an index of array(rawData)
-    const func = (id: number) => {
-        setOpen(true)
-        setItem(rawData[id])
-    }
 
     const columns = [
         {field: 'fullName', headerName: 'Full Name', flex: 1},
@@ -74,7 +70,7 @@ export default function DetailedTable(props: Props) {
 
     return (
         <Stack
-            sx={{py: 2, height:'100%', boxSizing: 'border-box'}}
+            sx={{py: 2, height: '100%', boxSizing: 'border-box'}}
             direction="column"
         >
             <Paper sx={{flex: 1, mx: 'auto', width: '90%', p: 1}}>
@@ -85,8 +81,9 @@ export default function DetailedTable(props: Props) {
                         rows={detailedRawData}
                         sx={{flex: 1}}
                         hideFooter
-                        onRowClick={(params: GridRowParams, event: MuiEvent<React.MouseEvent>, details: GridCallbackDetails) => {
-                            func(Number(params.id))
+                        onRowClick={async (params: GridRowParams<ApplicantDataType>, event: MuiEvent<React.MouseEvent>, details: GridCallbackDetails) => {
+                            await setItemID(+params.id)
+                            setOpen(true)
                         }}
                     />
                 </Stack>
@@ -94,11 +91,13 @@ export default function DetailedTable(props: Props) {
                 <Dialog
                     open={open}
                     onClose={handleClose}
-                    scroll={"paper"}
+                    scroll={'paper'}
                     aria-labelledby="scroll-dialog-title"
                     aria-describedby="scroll-dialog-description"
+                    fullWidth
+                    maxWidth={'xl'}
                 >
-                        <ModalContent item={item} descriptionElementRef={descriptionElementRef}/>
+                    <ModalContent applicantDataID={itemID} applicationID={props.applicantDataID} descriptionElementRef={descriptionElementRef} onClose={handleClose}/>
                 </Dialog>
             </Paper>
         </Stack>
