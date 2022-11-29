@@ -12,25 +12,6 @@ import {useAppDispatch} from "../../../hooks/hooks";
 import {delApplicationTC} from "../../../state/adminPanelSlice";
 
 type Props = { rows: Row[] }
-/*const commonModalState = {
-    _id: '',
-    cardsPack_id: '',
-    name: '',
-    private: false as boolean | undefined,
-    question: '',
-    answer: '',
-    title: '',
-    packCover: '',
-    questionURL: '',
-    answerURL: '',
-    openAddPackModal: false as boolean | undefined,
-    openEditPackModal: false as boolean | undefined,
-    openDelPackModal: false as boolean | undefined,
-    openAddCardModal: false as boolean | undefined,
-    openEditCardModal: false as boolean | undefined,
-    openDelCardModal: false
-}
-type CommonModalStateType = typeof commonModalState*/
 
 export type ObjForModalType = {
     email: string
@@ -67,8 +48,8 @@ export default function TableForAdminPanel({rows}: Props) {
             field: 'actions', headerName: 'Actions', flex: 1,
             renderCell: (params: any) => (
                 <>
-                    <IconButton onClick={() => {
-                        setObjForModal({
+                    <IconButton onClick={async () => {
+                       await setObjForModal({
                             email: params.row.email,
                             date: params.row.rawData,
                             service: params.row.service,
@@ -86,7 +67,7 @@ export default function TableForAdminPanel({rows}: Props) {
     const getDetailPanelHeight = React.useCallback(() => 300, []);
 
     const getDetailPanelContent = React.useCallback<NonNullable<DataGridProProps['getDetailPanelContent']>>(({row}) =>
-        <DetailedTable row={row.applicantsData}/>, []);
+        <DetailedTable row={row.applicantsData} applicantDataID={row.id}/>, []);
 
     const setRowColor = (serviceName: string) => {
         return (serviceName === 'Срочная виза без отеля-120') || (serviceName === 'Срочная виза с отелем-100') ? 'bg-orange-100' : '';
