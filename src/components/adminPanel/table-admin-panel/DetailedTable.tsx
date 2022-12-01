@@ -96,6 +96,7 @@ export default function DetailedTable(props: Props) {
                     aria-describedby="scroll-dialog-description"
                     fullWidth
                     maxWidth={'xl'}
+                    className={'flex justify-center'}
                 >
                     <ModalContent applicantDataID={itemID} applicationID={props.applicantDataID} descriptionElementRef={descriptionElementRef} onClose={handleClose}/>
                 </Dialog>
