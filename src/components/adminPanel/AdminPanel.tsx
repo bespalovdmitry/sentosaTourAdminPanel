@@ -30,7 +30,7 @@ export const AdminPanel = () => {
         return {
             id: i,
             rawData: d.appDate,
-            appDate: moment(d.appDate).format('D/M/YYYY, hh:mm'),
+            appDate: moment(d.appDate).format('YYYY/MM/DD, HH:mm'),
             applicantsData: d.applicantsData,
             file: d.file,
             fullPrice: d.fullPrice,
