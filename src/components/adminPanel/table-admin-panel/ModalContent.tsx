@@ -2,25 +2,20 @@ import * as React from 'react'
 import {ApplicantDataType} from '../../../models/applicantModel';
 import {TextField} from '@mui/material';
 import {useAppSelector} from '../../../hooks/hooks';
-import {Field, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import DialogContentText from '@mui/material/DialogContentText';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Select from '@mui/material/Select';
 import PhotoIcon from '@mui/icons-material/Photo';
 import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
 import {YesNoToBool} from '../../../utils/YesNoToBool';
 import IconButton from '@mui/material/IconButton';
+import {Dayjs} from 'dayjs';
+import Paper from '@mui/material/Paper';
 
 
 type Props = {
@@ -30,63 +25,12 @@ type Props = {
     onClose: () => void
 }
 
-type FormikErrorType = Partial<{
-    fullName: string
-    male: string
-    citizenship: string
-    familyStatus: string
-    mainApplicantIs: string
-    religion: string
-    yearIncome: string
-    education: string
-    position: string
-
-    passportCopyFiles: string
-    passportCountry: string
-    passportIssuedBy: string
-    passportNumber: string
-    passportData: string
-    passportExpire: string
-    birthDate: string
-
-    residenceCountry: string
-    residenceCity: string
-    residenceAddress: string
-    residenceIndex: string
-
-    fliesFrom: string
-    flightInNumber: string
-    flightInDate: string
-    flightOutNumber: string
-    flightOutDate: string
-
-    hasVisaBefore: string
-    hasVisaBeforeData: string
-    hasLivedInNonResidenceCountry: string
-    hasLivedInNonResidenceCountryData: string
-    hasDeported: string
-    hasDeportedData: string
-    hasConvicted: string
-    hasConvictedData: string
-    hasVisaReject: string
-    hasVisaRejectData: string
-    hasAnotherPassport: string
-    hasAnotherPassportData: string
-
-    photoFiles: string
-    inTicketsFiles: string
-    outTicketsFiles: string
-    additionFiles: string
-    bookingHotel: string
-    hotelsData: string
-}>
-
 export const ModalContent = (props: Props) => {
     const {applicationID, applicantDataID, onClose} = props;
     const applicantsData = useAppSelector(state => state.adminPanelSlice[applicationID].applicantsData[applicantDataID!])
     const item = {...applicantsData}
 
-    console.log(item)
+
     const openInNewTab = (url: string) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     };
@@ -110,12 +54,12 @@ export const ModalContent = (props: Props) => {
                     id="scroll-dialog-description"
                     ref={props.descriptionElementRef}
                 >
-                    <form className="mt-6 mb-4 flex flex-col gap-8 " onSubmit={formik.handleSubmit}>
-                        <div>
+                    <form className="mt-6 mb-4 flex flex-col gap-8 items-center" onSubmit={formik.handleSubmit}>
+                        <Paper elevation={3} className={'p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
                                 Основная информация
                             </h2>
-                            <div className={'flex flex-row gap-6 flex-wrap'}>
+                            <div className={'flex gap-6 flex-wrap justify-center'}>
                                 <>
                                     <TextField
                                         label={'Ваше полное имя'}
@@ -206,13 +150,13 @@ export const ModalContent = (props: Props) => {
                                         <div className="text-rose-600">{formik.errors.mainApplicantIs}</div> : null}
                                 </>
                             </div>
-                        </div>
-                        <div>
+                        </Paper>
+                        <Paper elevation={3} className={'p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 '}>
                                 Паспортные данные
                             </h2>
-                            <div>
-                                <div className="mt-4">
+                            <div className={'2xl:flex 2xl:justify-center 2xl:gap-6'}>
+                                <div className="mt-4 flex gap-6">
                                     <>
                                         <TextField className={''}
                                                    select
@@ -271,7 +215,10 @@ export const ModalContent = (props: Props) => {
                                             label="Дата выдачи"
                                             {...formik.getFieldProps('passportData')}
                                             renderInput={(params) => <TextField {...params} />}
-                                            onChange={date => formik.setFieldValue('passportData', date)}
+                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                formik.setFieldValue('passportData', formattedDate)
+                                            }}
                                         />
                                     </LocalizationProvider>
                                     {formik.errors.passportData && formik.touched.passportData ?
@@ -282,7 +229,10 @@ export const ModalContent = (props: Props) => {
                                             label="Дата окончания"
                                             {...formik.getFieldProps('passportExpire')}
                                             renderInput={(params) => <TextField {...params} />}
-                                            onChange={date => formik.setFieldValue('passportExpire', date)}
+                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                formik.setFieldValue('passportExpire', formattedDate)
+                                            }}
                                         />
                                     </LocalizationProvider>
                                     {formik.errors.passportExpire && formik.touched.passportExpire ?
@@ -294,19 +244,22 @@ export const ModalContent = (props: Props) => {
                                             label="Дата рождения"
                                             {...formik.getFieldProps('birthDate')}
                                             renderInput={(params) => <TextField {...params} />}
-                                            onChange={date => formik.setFieldValue('birthDate', date)}
+                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                formik.setFieldValue('birthDate', formattedDate)
+                                            }}
                                         />
                                     </LocalizationProvider>
                                     {formik.errors.birthDate && formik.touched.birthDate ?
                                         <div className="text-rose-600">{formik.errors.birthDate}</div> : null}
                                 </div>
                             </div>
-                        </div>
-                        <div>
+                        </Paper>
+                        <Paper elevation={3} className={'p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-6'}>
                                 Образование/доходы
                             </h2>
-                            <div className={'flex gap-4'}>
+                            <div className={'flex justify-center gap-4'}>
                                 <>
                                     <TextField select className={''}
                                                label={'Вероисповедание'}
@@ -374,17 +327,17 @@ export const ModalContent = (props: Props) => {
                                         <div className="text-rose-600">{formik.errors.position}</div> : null}
                                 </>
                             </div>
-                        </div>
-                        <div>
+                        </Paper>
+                        <Paper elevation={3} className={'p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
-                                Residence
+                                Прописка
                             </h2>
-                            <div>
+                            <div className={'flex justify-center gap-6'}>
                                 <>
                                     <TextField
                                         select
                                         label={'Страна'}
-                                        className="mt-4"
+                                        className={'mt-4 w-[200px]'}
                                         {...formik.getFieldProps('residenceCountry')}
                                     >
                                         <MenuItem value="">Выберите страну</MenuItem>
@@ -405,11 +358,9 @@ export const ModalContent = (props: Props) => {
                                     {formik.errors.residenceCountry && formik.touched.residenceCountry ?
                                         <div className="text-rose-600">{formik.errors.residenceCountry}</div> : null}
                                 </>
-
-
                                 <>
                                     <TextField
-                                        className="mt-4"
+                                        className={'mt-4 w-[300px]'}
                                         label={'Город'}
                                         {...formik.getFieldProps('residenceCity')}
                                         autoComplete={'none'}
@@ -420,6 +371,7 @@ export const ModalContent = (props: Props) => {
                                 <>
                                     <TextField
                                         label={'Адрес'}
+                                        fullWidth
                                         className="mt-4"
                                         placeholder="Улица, дом, квартира"
                                         {...formik.getFieldProps('residenceAddress')}
@@ -440,12 +392,12 @@ export const ModalContent = (props: Props) => {
                                         <div className="text-rose-600">{formik.errors.residenceIndex}</div> : null}
                                 </>
                             </div>
-                        </div>
-                        <div>
+                        </Paper>
+                        <Paper elevation={3} className={'p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
                                 Прилет/Вылет
                             </h2>
-                            <div>
+                            <div className={'flex justify-center gap-6'}>
                                 <>
                                     <TextField select label={'Страна вылета'} className="mt-4"
                                                {...formik.getFieldProps('fliesFrom')}
@@ -707,7 +659,6 @@ export const ModalContent = (props: Props) => {
                                     {formik.errors.fliesFrom && formik.touched.fliesFrom ?
                                         <div className="text-rose-600">{formik.errors.fliesFrom}</div> : null}
                                 </>
-
                                 <>
                                     <TextField
                                         label={'Номер рейса в Сингапур'}
@@ -725,13 +676,15 @@ export const ModalContent = (props: Props) => {
                                             label="Дата прилета"
                                             {...formik.getFieldProps('flightInDate')}
                                             renderInput={(params) => <TextField {...params} />}
-                                            onChange={date => formik.setFieldValue('flightInDate', date)}
+                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                formik.setFieldValue('flightInDate', formattedDate)
+                                            }}
                                         />
                                     </LocalizationProvider>
                                     {formik.errors.flightInDate && formik.touched.flightInDate ?
                                         <div className="text-rose-600">{formik.errors.flightInDate}</div> : null}
                                 </>
-
                                 <>
                                     <TextField
                                         label={'Номер рейса из Сингапура'}
@@ -750,15 +703,18 @@ export const ModalContent = (props: Props) => {
                                             label="Дата вылета"
                                             {...formik.getFieldProps('flightOutDate')}
                                             renderInput={(params) => <TextField {...params} />}
-                                            onChange={date => formik.setFieldValue('flightOutDate', date)}
+                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                formik.setFieldValue('flightOutDate', formattedDate)
+                                            }}
                                         />
                                     </LocalizationProvider>
                                     {formik.errors.flightOutDate && formik.touched.flightOutDate ?
                                         <div className="text-rose-600">{formik.errors.flightOutDate}</div> : null}
                                 </>
                             </div>
-                        </div>
-                        <div className={'flex flex-col gap-5'}>
+                        </Paper>
+                        <Paper elevation={3} className={'flex flex-col gap-5 p-6 w-full'}>
                             <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
                                 Законы/прошлые визы
                             </h2>
@@ -773,8 +729,8 @@ export const ModalContent = (props: Props) => {
                                     {formik.errors.hasVisaBefore && formik.touched.hasVisaBefore ?
                                         <div className="text-rose-600">{formik.errors.hasVisaBefore}</div> : null}
                                 </>
-                                {YesNoToBool(formik.values.hasVisaBefore) && <div>
-                                    <p className={'font-bold'}>Visa Files:</p>
+                                {YesNoToBool(formik.values.hasVisaBefore) && <div className={'my-4'}>
+                                    <h5 className={'font-bold'}>Прошлые визы:</h5>
                                     {formik.values.hasVisaBeforeData.map((el, i) => (
                                         <IconButton onClick={() => openInNewTab(el)} key={i}>
                                             <PhotoIcon fontSize={'large'}/>
@@ -791,24 +747,30 @@ export const ModalContent = (props: Props) => {
                                         {...formik.getFieldProps('hasLivedInNonResidenceCountry')}
                                     />
                                     {formik.errors.hasLivedInNonResidenceCountry && formik.touched.hasLivedInNonResidenceCountry ?
-                                        <div className="text-rose-600">{formik.errors.hasLivedInNonResidenceCountry}</div> : null}
+                                        <div
+                                            className="text-rose-600">{formik.errors.hasLivedInNonResidenceCountry}</div> : null}
                                 </>
                                 {YesNoToBool(formik.values.hasLivedInNonResidenceCountry) && <div>
-                                    <p className={'font-bold'}>Dates:</p>
+                                    <h5 className={'font-bold my-4'}>Даты:</h5>
                                     <div>
                                         {formik.values.hasLivedInNonResidenceCountryData.map((el, index) => {
                                             return (
-                                                <div className="flex flex-row" key={index}>
+                                                <div className="flex flex-row gap-6" key={index}>
 
-                                                    <TextField className="mt-2"
+                                                    <TextField className={'mt-2 w-[200px]'}
                                                                select
                                                                label={'Страна'}
-                                                               fullWidth
                                                                required
+                                                               name={'country'}
                                                                value={el.country}
                                                                onChange={(e) => {
-                                                                   /* onBlurDatesHandler('country', e.currentTarget.value, index)*/
-
+                                                                   const key = e.target.name
+                                                                   const data = formik.values.hasLivedInNonResidenceCountryData.map(
+                                                                       (el, ind) => ind === index ? ({
+                                                                           ...el,
+                                                                           [key]: e.target.value
+                                                                       }) : el);
+                                                                   formik.setFieldValue('hasLivedInNonResidenceCountryData', data)
                                                                }}
                                                     >
                                                         <MenuItem value="">Выберите страну</MenuItem>
@@ -863,7 +825,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="CO">Colombia</MenuItem>
                                                         <MenuItem value="KM">Comoros</MenuItem>
                                                         <MenuItem value="CG">Congo</MenuItem>
-                                                        <MenuItem value="CD">Congo, Democratic Republic of the Congo</MenuItem>
+                                                        <MenuItem value="CD">Congo, Democratic Republic of the
+                                                            Congo</MenuItem>
                                                         <MenuItem value="CK">Cook Islands</MenuItem>
                                                         <MenuItem value="CR">Costa Rica</MenuItem>
                                                         <MenuItem value="CI">Cote D'Ivoire</MenuItem>
@@ -908,7 +871,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="GW">Guinea-Bissau</MenuItem>
                                                         <MenuItem value="GY">Guyana</MenuItem>
                                                         <MenuItem value="HT">Haiti</MenuItem>
-                                                        <MenuItem value="HM">Heard Island and Mcdonald Islands</MenuItem>
+                                                        <MenuItem value="HM">Heard Island and Mcdonald
+                                                            Islands</MenuItem>
                                                         <MenuItem value="VA">Holy See (Vatican City State)</MenuItem>
                                                         <MenuItem value="HN">Honduras</MenuItem>
                                                         <MenuItem value="HK">Hong Kong</MenuItem>
@@ -929,7 +893,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="KZ">Kazakhstan</MenuItem>
                                                         <MenuItem value="KE">Kenya</MenuItem>
                                                         <MenuItem value="KI">Kiribati</MenuItem>
-                                                        <MenuItem value="KP">Korea, Democratic People's Republic of</MenuItem>
+                                                        <MenuItem value="KP">Korea, Democratic People's Republic
+                                                            of</MenuItem>
                                                         <MenuItem value="KR">Korea, Republic of</MenuItem>
                                                         <MenuItem value="XK">Kosovo</MenuItem>
                                                         <MenuItem value="KW">Kuwait</MenuItem>
@@ -944,7 +909,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="LT">Lithuania</MenuItem>
                                                         <MenuItem value="LU">Luxembourg</MenuItem>
                                                         <MenuItem value="MO">Macao</MenuItem>
-                                                        <MenuItem value="MK">Macedonia, the Former Yugoslav Republic of</MenuItem>
+                                                        <MenuItem value="MK">Macedonia, the Former Yugoslav Republic
+                                                            of</MenuItem>
                                                         <MenuItem value="MG">Madagascar</MenuItem>
                                                         <MenuItem value="MW">Malawi</MenuItem>
                                                         <MenuItem value="MY">Malaysia</MenuItem>
@@ -1021,7 +987,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="SB">Solomon Islands</MenuItem>
                                                         <MenuItem value="SO">Somalia</MenuItem>
                                                         <MenuItem value="ZA">South Africa</MenuItem>
-                                                        <MenuItem value="GS">South Georgia and the South Sandwich Islands</MenuItem>
+                                                        <MenuItem value="GS">South Georgia and the South Sandwich
+                                                            Islands</MenuItem>
                                                         <MenuItem value="SS">South Sudan</MenuItem>
                                                         <MenuItem value="ES">Spain</MenuItem>
                                                         <MenuItem value="LK">Sri Lanka</MenuItem>
@@ -1051,7 +1018,8 @@ export const ModalContent = (props: Props) => {
                                                         <MenuItem value="AE">United Arab Emirates</MenuItem>
                                                         <MenuItem value="GB">United Kingdom</MenuItem>
                                                         <MenuItem value="US">United States</MenuItem>
-                                                        <MenuItem value="UM">United States Minor Outlying Islands</MenuItem>
+                                                        <MenuItem value="UM">United States Minor Outlying
+                                                            Islands</MenuItem>
                                                         <MenuItem value="UY">Uruguay</MenuItem>
                                                         <MenuItem value="UZ">Uzbekistan</MenuItem>
                                                         <MenuItem value="VU">Vanuatu</MenuItem>
@@ -1072,9 +1040,16 @@ export const ModalContent = (props: Props) => {
                                                         placeholder={'Укажите адресс'}
                                                         fullWidth
                                                         required
+                                                        name={'address'}
                                                         value={el.address}
                                                         onChange={(e) => {
-                                                            /* onBlurDatesHandler('address', e.currentTarget.value, index)*/
+                                                            const key = e.target.name
+                                                            const data = formik.values.hasLivedInNonResidenceCountryData.map(
+                                                                (el, ind) => ind === index ? ({
+                                                                    ...el,
+                                                                    [key]: e.target.value
+                                                                }) : el);
+                                                            formik.setFieldValue('hasLivedInNonResidenceCountryData', data)
                                                         }}
                                                     />
 
@@ -1084,10 +1059,16 @@ export const ModalContent = (props: Props) => {
                                                         type="text"
                                                         placeholder={'2016-2017'}
                                                         required
-                                                        fullWidth
+                                                        name={'date'}
                                                         value={el.date}
                                                         onChange={(e) => {
-                                                            /*onBlurDatesHandler('date', e.currentTarget.value, index)*/
+                                                            const key = e.target.name
+                                                            const data = formik.values.hasLivedInNonResidenceCountryData.map(
+                                                                (el, ind) => ind === index ? ({
+                                                                    ...el,
+                                                                    [key]: e.target.value
+                                                                }) : el);
+                                                            formik.setFieldValue('hasLivedInNonResidenceCountryData', data)
                                                         }}
                                                     />
 
@@ -1096,23 +1077,280 @@ export const ModalContent = (props: Props) => {
                                     </div>
                                 </div>}
                             </div>
+                            <div className={'flex gap-5 justify-between'}>
+                                <div>
+                                    <>
+                                        <TextField
+                                            label={'Депортировали ли'}
+                                            className="mt-4"
+                                            placeholder="TR002"
+                                            {...formik.getFieldProps('hasDeported')}
+                                        />
+                                        {formik.errors.hasDeported && formik.touched.hasDeported ?
+                                            <div
+                                                className="text-rose-600">{formik.errors.hasDeported}</div> : null}
+                                    </>
+                                    {YesNoToBool(formik.values.hasDeported) && <div>
+                                        <h5 className={'font-bold'}>Подробности:</h5>
+                                        <>
+                                            <TextField
+                                                label={'Подробности'}
+                                                className="mt-2"
+                                                {...formik.getFieldProps('hasDeportedData')}
+                                            />
+                                        </>
+                                    </div>}
+                                </div>
 
-                            hasLivedInNonResidenceCountry: string
-                            hasLivedInNonResidenceCountryData: string
-                            hasDeported: string
-                            hasDeportedData: string
-                            hasConvicted: string
-                            hasConvictedData: string
-                            hasVisaReject: string
-                            hasVisaRejectData: string
-                            hasAnotherPassport: string
-                            hasAnotherPassportData: string
-                        </div>
-                        <DialogActions>
+                                <div>
+                                    <>
+                                        <TextField
+                                            label={'Был ли осужден ранее'}
+                                            className="mt-4"
+                                            placeholder="TR002"
+                                            {...formik.getFieldProps('hasConvicted')}
+                                        />
+                                        {formik.errors.hasConvicted && formik.touched.hasConvicted ?
+                                            <div
+                                                className="text-rose-600">{formik.errors.hasConvicted}</div> : null}
+                                    </>
+                                    {YesNoToBool(formik.values.hasConvicted) && <div>
+                                        <h5 className={'font-bold'}>Подробности:</h5>
+                                        <>
+                                            <TextField
+                                                label={'Подробности'}
+                                                className="mt-2"
+                                                {...formik.getFieldProps('hasConvictedData')}
+                                            />
+                                        </>
+                                    </div>}
+                                </div>
+
+                                <div>
+                                    <>
+                                        <TextField
+                                            label={'Отказы в визе ранее'}
+                                            className="mt-4"
+                                            placeholder="TR002"
+                                            {...formik.getFieldProps('hasVisaReject')}
+                                        />
+                                        {formik.errors.hasVisaReject && formik.touched.hasVisaReject ?
+                                            <div
+                                                className="text-rose-600">{formik.errors.hasVisaReject}</div> : null}
+                                    </>
+                                    {YesNoToBool(formik.values.hasVisaReject) && <div>
+                                        <h5 className={'font-bold'}>Отказы:</h5>
+                                        {formik.values.hasVisaRejectData.map((el, i) => (
+                                            <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                <PhotoIcon fontSize={'large'}/>
+                                            </IconButton>
+                                        ))}
+                                    </div>}
+                                </div>
+
+                                <div>
+                                    <>
+                                        <TextField
+                                            label={'Въезд с другим паспортом в Сингапур'}
+                                            className="mt-4"
+                                            placeholder="TR002"
+                                            {...formik.getFieldProps('hasAnotherPassport')}
+                                        />
+                                        {formik.errors.hasAnotherPassport && formik.touched.hasAnotherPassport ?
+                                            <div
+                                                className="text-rose-600">{formik.errors.hasAnotherPassport}</div> : null}
+                                    </>
+                                    <>
+                                        {YesNoToBool(formik.values.hasAnotherPassport) && <div>
+                                            <h5 className={'font-bold'}>Паспорта:</h5>
+                                            {formik.values.hasAnotherPassportData.map((el, i) => (
+                                                <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                    <PhotoIcon fontSize={'large'}/>
+                                                </IconButton>
+                                            ))}
+                                        </div>}
+
+                                    </>
+
+                                </div>
+                            </div>
+
+                        </Paper>
+                        <Paper elevation={3} className={'p-6 w-max'}>
+                            <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
+                                Фото
+                            </h2>
+                            <div className={'flex gap-6 justify-center'}>
+                                <Paper className={'p-4'}>
+                                    <p className={'font-bold'}>Паспорт:</p>
+                                    <div>
+                                        {formik.values.passportCopyFiles.map((el, index) => <IconButton
+                                                onClick={() => openInNewTab(el)} key={index}>
+                                                <PhotoIcon fontSize={'large'}/>
+                                            </IconButton>
+                                        )}
+                                    </div>
+                                </Paper>
+                                <Paper className={'p-4'}>
+                                    <p className={'font-bold'}>Фото на визу:</p>
+                                    <div>
+                                        {formik.values.photoFiles.map((el, index) => <IconButton
+                                            onClick={() => openInNewTab(el)} key={index}>
+                                            <PhotoIcon fontSize={'large'}/>
+                                        </IconButton>)}
+                                    </div>
+                                </Paper>
+                                <Paper className={'p-4'}>
+                                    <p className={'font-bold'}>Билеты в Сингапур:</p>
+                                    <div>
+                                        {formik.values.inTicketsFiles.map((el, i) => (
+                                            <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                <PhotoIcon fontSize={'large'}/>
+                                            </IconButton>
+                                        ))}
+                                    </div>
+                                </Paper>
+                                <Paper className={'p-4'}>
+                                    <p className={'font-bold'}>Билеты из Сингапура:</p>
+                                    <div>
+                                        {formik.values.outTicketsFiles.map((el, i) => (
+                                            <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                <PhotoIcon fontSize={'large'}/>
+                                            </IconButton>
+                                        ))}
+                                    </div>
+                                </Paper>
+                                {formik.values.bookingHotel.length !== 0 && <Paper className={'p-4'}>
+                                    <p className={'font-bold'}>Бронь отеля:</p>
+                                    <div>
+                                        {formik.values.bookingHotel.map((el, i) => (
+                                            <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                <PhotoIcon fontSize={'large'}/>
+                                            </IconButton>
+                                        ))}
+                                    </div>
+                                </Paper>}
+                            </div>
+
+
+                            <div>
+                                {!formik.values.bookingHotel.length &&
+                                    <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
+                                        Hotels
+                                    </h2>}
+                                {!formik.values.bookingHotel.length && formik.values.hotelsData && formik.values.hotelsData.map((el, elementIndex) => {
+                                    return (
+                                        <div key={elementIndex}>
+                                            <p className={'font-bold mb-4'}>Отель номер {elementIndex + 1}:</p>
+                                            <div className="flex gap-5">
+                                                <div className={'col-span-2'}>
+                                                    <TextField
+                                                        label={'Название отеля'}
+                                                        className="mt-2"
+                                                        name={'hotelName'}
+                                                        placeholder={'Укажите название отеля'}
+                                                        required
+                                                        value={el.hotelName}
+                                                        onChange={(e) => {
+                                                            const key = e.target.name
+                                                            const data = formik.values.hotelsData.map(
+                                                                (el, ind) => ind === elementIndex ? ({
+                                                                    ...el,
+                                                                    [key]: e.target.value
+                                                                }) : el);
+                                                            formik.setFieldValue('hotelsData', data)
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className={'col-span-2'}>
+                                                    <TextField
+                                                        label={'Полный адрес отеля'}
+                                                        className="mt-2"
+                                                        placeholder={'Укажите полный адрес отеля'}
+                                                        required
+                                                        name={'hotelAddress'}
+                                                        value={el.hotelAddress}
+                                                        onChange={(e) => {
+                                                            const key = e.target.name
+                                                            const data = formik.values.hotelsData.map(
+                                                                (el, ind) => ind === elementIndex ? ({
+                                                                    ...el,
+                                                                    [key]: e.target.value
+                                                                }) : el);
+                                                            formik.setFieldValue('hotelsData', data)
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                        <DatePicker
+                                                            inputFormat="DD/MM/YYYY"
+                                                            label="Дата заселения"
+                                                            value={el.arrivalDate}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                                const data = formik.values.hotelsData.map(
+                                                                    (el, ind) => ind === elementIndex ? ({
+                                                                        ...el,
+                                                                        ['arrivalDate']: formattedDate
+                                                                    }) : el);
+                                                                formik.setFieldValue('hotelsData', data)
+                                                            }}
+                                                        />
+                                                    </LocalizationProvider>
+                                                </div>
+                                                <div>
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                        <DatePicker
+                                                            inputFormat="DD/MM/YYYY"
+                                                            label="Дата выселения"
+                                                            value={el.departureDate}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            onChange={(date: Dayjs | null, keyboardInputValue?: string | undefined) => {
+                                                                let formattedDate = date && date.format('YYYY-MM-DD')
+                                                                const data = formik.values.hotelsData.map(
+                                                                    (el, ind) => ind === elementIndex ? ({
+                                                                        ...el,
+                                                                        ['departureDate']: formattedDate
+                                                                    }) : el);
+                                                                formik.setFieldValue('hotelsData', data)
+                                                            }}
+                                                        />
+                                                    </LocalizationProvider>
+                                                </div>
+                                            </div>
+                                            <div className="mt-2">
+                                                <p className={'font-bold'}>Hotel booking:</p>
+                                                <div>
+                                                    {el?.bookingHotel.map((el, i) => (
+                                                        <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                                            <PhotoIcon fontSize={'large'}/>
+                                                        </IconButton>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
+                            {!!formik.values.additionFiles.length && <div>
+                                <h2 className={'font-semibold text-xl text-neutral-700 dark:text-neutral-300 mb-4'}>
+                                    Additional files:
+                                </h2>
+                                {formik.values.additionFiles.map((el, i) => (
+                                    <IconButton onClick={() => openInNewTab(el)} key={i}>
+                                        <PhotoIcon fontSize={'large'}/>
+                                    </IconButton>
+                                ))}
+                            </div>}
+                        </Paper>
+                        <DialogActions className={'flex gap-10 self-end'}>
                             <Button onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button type={'submit'}>
+                            <Button type={'submit'} variant={'contained'}>
                                 Confirm
                             </Button>
                         </DialogActions>
