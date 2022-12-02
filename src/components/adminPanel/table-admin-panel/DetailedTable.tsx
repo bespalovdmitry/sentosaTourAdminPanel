@@ -4,7 +4,7 @@ import {DataGridPro, GridCallbackDetails, GridRowParams, MuiEvent} from '@mui/x-
 import * as React from 'react';
 import {useState} from 'react';
 import {ApplicantDataType} from '../../../models/applicantModel';
-import {ModalContent} from './ModalContent';
+import {ModalContent} from './Modal/ModalContent';
 import Dialog from '@mui/material/Dialog';
 
 type Props = {
