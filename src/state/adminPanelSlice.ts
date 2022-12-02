@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ApplicantDataType} from '../models/applicantModel';
 import {firebaseAPI} from '../firebase/firebase';
 import {setError, setMessage, setStatus} from './appSlice';
+import {RootStateType} from './store';
 
 
 export const fetchDataTC = createAsyncThunk('adminPanel/fetchData', async (param, {
@@ -36,6 +37,33 @@ export const delApplicationTC = createAsyncThunk('adminPanel/delApplication', as
     }
 })
 
+export const sendChangedApplicationTC = createAsyncThunk('adminPanel/sendChangedApplication', async (params: {
+    ApplicantData: ApplicantDataType, applicationID: number, applicantDataID: number | undefined}, {dispatch, getState, rejectWithValue}) => {
+    dispatch(setStatus({status: 'loading'}))
+
+    const {applicantDataID, applicationID, ApplicantData} = params
+    try {
+        const state = getState() as RootStateType
+        const application = state.adminPanelSlice[applicationID]
+        const changedApplication = {
+            ...application,
+            applicantsData: application.applicantsData.map((el, ind) => ind === applicantDataID ? ApplicantData : el)
+        }
+
+
+        await firebaseAPI.sendApplicantObject(changedApplication)
+
+        dispatch(setMessage({message: 'Данные успешно обновлены'}))
+
+        return {changedApplication, applicationID}
+    } catch {
+        dispatch(setError({error: 'Ошибка при отправке'}))
+        return rejectWithValue(null)
+    } finally {
+        dispatch(setStatus({status: 'idle'}))
+    }
+})
+
 export const adminPanelSlice = createSlice({
     name: 'adminPanel',
     initialState: [{
@@ -61,6 +89,9 @@ export const adminPanelSlice = createSlice({
                 let index = action.payload
                 state.splice(index, 1);
             })
+            .addCase(sendChangedApplicationTC.fulfilled, (state, action) => {
+                state[action.payload.applicationID] = action.payload.changedApplication
+            })
     }
 })
 
@@ -69,7 +100,7 @@ export default adminPanelSlice.reducer;
 //types
 export type InitialStateType = Array<ApplicationType>;
 
-type ApplicationType = {
+export type ApplicationType = {
     appDate: string
     applicantsData: ApplicantDataType[]
     email: string
