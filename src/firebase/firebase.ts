@@ -1,6 +1,7 @@
 import {initializeApp} from 'firebase/app';
 import {deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes} from 'firebase/storage'
-import {collection, getFirestore, getDocs, deleteDoc, doc} from 'firebase/firestore';
+import {collection, getFirestore, getDocs, deleteDoc, doc, setDoc} from 'firebase/firestore';
+import {ApplicationType} from '../state/adminPanelSlice';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,6 +18,10 @@ export const db = getFirestore(app);
 const storage = getStorage(app)
 
 export const firebaseAPI = {
+    sendApplicantObject: async (applicant: ApplicationType) => {
+        const docRef = doc(db, "root_applicant", `${applicant.email} - ${applicant.appDate}` );
+        return await setDoc(docRef, applicant)
+    },
     getData: async () => {
         const docRef = collection(db, 'root_applicant');
         const docSnap = await getDocs(docRef);
